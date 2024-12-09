@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  php:
+    image: php:7.4-apache
+    container_name: php_app
+    volumes:
+      - ./index.php:/var/www/html/index.php
+    ports:
+      - "80:80"
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nginx_proxy
+    ports:
+      - "4500:4500"
+    depends_on:
+      - php
+
+  db:
+    image: mysql:5.7
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: Senha123
+      MYSQL_DATABASE: meubanco
+    ports:
+      - "3306:3306"
